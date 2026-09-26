@@ -1,0 +1,34 @@
+UI Requirements
+-View all projects
+    -Have a default project where a user will be able to put all their todos
+-View all todos in each project (probably just the title and duedate… perhaps changing color for different priorities).
+-Expand a single todo to see/edit its details.
+-Delete a todo.
+
+Todo Object Property Requirements
+-title
+-description
+-dueDate
+-priority
+-Optional: notes, checklist, etc
+
+Plan
+
+JS
+Application Logic (its own module)
+-Todo factory
+-Project factory
+-Somewhere to store these todos / projects
+-Changing state (complete / incomplete)
+-Adding/removing projects
+-Adding/removing todos
+-Changing priority
+
+DOM Manipulation / Rendering (its own module)
+-Rendering projects
+-Rendering todos
+-Showing/hiding forms
+
+HTML
+-Create the layout so that it will be able to handle adding / removing DOM elements from the JS
+    -Make sure it includes the default project
