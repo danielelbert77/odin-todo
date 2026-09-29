@@ -1,0 +1,35 @@
+.panel-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    height: 100vh;
+}
+
+.list-panel {
+    padding-left: 16px;
+    background-color: rgb(235, 233, 233);
+}
+
+.new-button {
+    margin: 16px 0 32px 0;
+}
+
+.main-panel {
+    padding: 48px 0 0 48px;
+}
+
+
+.project {
+    display: flex;
+}
+
+.todo {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 16px;
+
+    border-top-style: solid;
+    border-top-color: gray;
+    border-bottom-style: solid;
+    border-bottom-color: gray;
+}

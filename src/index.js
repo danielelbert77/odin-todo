@@ -12,11 +12,14 @@ import {
 
 import {
     renderProjects,
-    renderTodos
+    renderTodos,
+    renderProjectForm
 } from "./dom.js";
 
+import './styles.css';
 
-//console test
+
+//test
 const defaultProject = createProject("Default");
 addProject(defaultProject);
 
@@ -29,3 +32,12 @@ changePriority(todo, 1);
 console.log(projectContainer);
 renderProjects();
 renderTodos(defaultProject);
+
+
+const newButton = document.querySelector(".new-button");
+const projectDialog = document.querySelector(".project-dialog");
+
+newButton.addEventListener("click", () => {
+    renderProjectForm();
+    projectDialog.showModal();
+});
