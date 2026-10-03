@@ -13,7 +13,7 @@ import {
 import {
     renderProjects,
     renderTodos,
-    renderProjectForm
+    renderTodoDropdown
 } from "./dom.js";
 
 import './styles.css';
@@ -29,15 +29,58 @@ addTodo(defaultProject, todo);
 todoToggle(todo);
 changePriority(todo, 1);
 
-console.log(projectContainer);
 renderProjects();
 renderTodos(defaultProject);
 
 
-const newButton = document.querySelector(".new-button");
+const newProjectButton = document.querySelector(".new-project-button");
 const projectDialog = document.querySelector(".project-dialog");
+const projectForm = document.querySelector(".project-form");
 
-newButton.addEventListener("click", () => {
-    renderProjectForm();
+newProjectButton.addEventListener("click", () => {
     projectDialog.showModal();
+});
+
+projectForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const projectName = document.querySelector("#project_name").value;
+
+    const project = createProject(projectName);
+    addProject(project);
+
+    renderProjects();
+
+    projectForm.reset();
+    projectDialog.close();
+});
+
+const newTodoButton = document.querySelector(".new-todo-button");
+const todoDialog = document.querySelector(".todo-dialog");
+const todoForm = document.querySelector(".todo-form");
+
+newTodoButton.addEventListener("click", () => {
+    todoDialog.showModal();
+    renderTodoDropdown();
+});
+
+todoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const chosenProjectId = document.querySelector("#project_list").value;
+    const todoName = document.querySelector("#todo_name").value;
+    const todoDescription = document.querySelector("#todo_description").value;
+    const todoDueDate = document.querySelector("#todo_duedate").value;
+
+    const chosenProject = projectContainer.find(
+        project => project.id === chosenProjectId
+    );
+
+    const todo = createTodo(todoName, todoDescription, todoDueDate);
+    addTodo(chosenProject, todo);
+
+    renderTodos(chosenProject);
+
+    todoForm.reset();
+    todoDialog.close();
 });

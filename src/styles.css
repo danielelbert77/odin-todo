@@ -9,7 +9,8 @@
     background-color: rgb(235, 233, 233);
 }
 
-.new-button {
+.new-project-button,
+.new-todo-button {
     margin: 16px 0 32px 0;
 }
 

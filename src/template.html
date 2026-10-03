@@ -8,14 +8,46 @@
 <body>
     <div class="panel-container">
         <div class="list-panel">
-            <button class="new-button">New</button>
-        </div>
-        <div class="main-panel">
+            <button class="new-project-button">New Project</button>
+            <div class="project-list">
 
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <button class="new-todo-button">New Todo</button>
+            <div class="todo-list">
+
+            </div>
         </div>
     </div>
-    <dialog class="project-dialog">
 
+    <dialog class="project-dialog">
+        <form class="project-form">
+            <label for="project_name">New Project Name:</label>
+            <input type="text" name="project_name" id="project_name" required>
+            <button type="submit">Save</button>
+        </form>
+    </dialog>
+
+    <dialog class="todo-dialog">
+        <form class="todo-form">
+            <label for="project_list">Choose an existing project:</label>
+            <select id="project_list" name="project_list">
+                <option value="">-- Please Select --</option>
+            </select>
+            
+            <label for="todo_name">New Todo Name:</label>
+            <input type="text" name="todo_name" id="todo_name" required>
+
+            <label for="todo_description">Description:</label>
+            <input type="text" name="todo_description" id="todo_description" required>
+
+            <label for="todo_duedate">Due Date:</label>
+            <input type="text" name="todo_duedate" id="todo_duedate" required>
+            
+            <button type="submit">Save</button>
+        </form>
     </dialog>
 </body>
 </html>
