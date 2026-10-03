@@ -5,8 +5,12 @@
 }
 
 .list-panel {
-    padding-left: 16px;
+    padding: 16px 0 0 16px;
     background-color: rgb(235, 233, 233);
+}
+
+.project {
+    display: flex;
 }
 
 .new-project-button,
@@ -15,22 +19,20 @@
 }
 
 .main-panel {
-    padding: 48px 0 0 48px;
+    padding: 16px 0 0 48px;
 }
 
-
-.project {
+.new-todo {
     display: flex;
+    margin-bottom: 16px;
+
+    border-top-style: solid;
+    border-top-color: rgb(235, 233, 233);
+    border-bottom-style: solid;
+    border-bottom-color: rgb(235, 233, 233);
 }
 
 .todo {
     display: flex;
     flex-direction: column;
-
-    margin-bottom: 16px;
-
-    border-top-style: solid;
-    border-top-color: gray;
-    border-bottom-style: solid;
-    border-bottom-color: gray;
 }

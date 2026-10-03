@@ -34,25 +34,41 @@ const renderTodos = (project) => {
 
     for (const todo of project.todos) {
         const newTodo = document.createElement("div");
-        newTodo.textContent = todo.title;
+        newTodo.className = "new-todo";
         newTodo.id = todo.id;
-        newTodo.className = "todo"
+
+        const todoCompletionToggle = document.createElement("input");
+        todoCompletionToggle.type = "checkbox";
+
+        const todoContent = document.createElement("div");
+        todoContent.textContent = todo.title;
+        todoContent.className = "todo";
 
         const todoDescription = document.createElement("span");
         todoDescription.textContent = todo.description;
         const todoDueDate = document.createElement("span");
         todoDueDate.textContent = todo.dueDate;
-        const todoPriority = document.createElement("span");
-        todoPriority.textContent = todo.priority;
-        const todoCompleted = document.createElement("span");
-        todoCompleted.textContent = todo.completed;
 
-        newTodo.appendChild(todoDescription);
-        newTodo.appendChild(todoDueDate);
-        newTodo.appendChild(todoPriority);
-        newTodo.appendChild(todoCompleted);
+        todoContent.appendChild(todoDescription);
+        todoContent.appendChild(todoDueDate);
+
+        const todoDeleteButton = document.createElement("button");
+        todoDeleteButton.type = "button";
+        todoDeleteButton.className = "todo-delete-button";
+        todoDeleteButton.id = todo.id;
+        todoDeleteButton.textContent = "Delete";
+
+        newTodo.appendChild(todoCompletionToggle);
+        newTodo.appendChild(todoContent);
+        newTodo.appendChild(todoDeleteButton);
 
         todoList.appendChild(newTodo);
+
+        todoDeleteButton.addEventListener("click", () => {
+            removeTodo(project, todoDeleteButton.id);
+
+            renderTodos(project);
+        });
     };
 };
 

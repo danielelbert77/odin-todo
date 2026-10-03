@@ -19,7 +19,6 @@ import {
 import './styles.css';
 
 
-//test
 const defaultProject = createProject("Default");
 addProject(defaultProject);
 
