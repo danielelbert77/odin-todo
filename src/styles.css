@@ -32,6 +32,10 @@
     border-bottom-color: rgb(235, 233, 233);
 }
 
+.todo-delete-button {
+    margin-left: auto;
+}
+
 .todo {
     display: flex;
     flex-direction: column;

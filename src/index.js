@@ -18,20 +18,16 @@ import {
 
 import './styles.css';
 
-
+//Creating a default project, a default todo, and rendering it upon startup
 const defaultProject = createProject("Default");
 addProject(defaultProject);
 
 const todo = createTodo("Learn JavaScript", "Default description for this example", "9/10/2025");
 addTodo(defaultProject, todo);
 
-todoToggle(todo);
-changePriority(todo, 1);
-
-renderProjects();
 renderTodos(defaultProject);
 
-
+//functionality for adding a new project to projectContainer
 const newProjectButton = document.querySelector(".new-project-button");
 const projectDialog = document.querySelector(".project-dialog");
 const projectForm = document.querySelector(".project-form");
@@ -48,12 +44,13 @@ projectForm.addEventListener("submit", (event) => {
     const project = createProject(projectName);
     addProject(project);
 
-    renderProjects();
+    renderProjects(focusProject);
 
     projectForm.reset();
     projectDialog.close();
 });
 
+//functionality for adding a new todo to a project
 const newTodoButton = document.querySelector(".new-todo-button");
 const todoDialog = document.querySelector(".todo-dialog");
 const todoForm = document.querySelector(".todo-form");
@@ -83,3 +80,15 @@ todoForm.addEventListener("submit", (event) => {
     todoForm.reset();
     todoDialog.close();
 });
+
+
+let focusedProject = defaultProject;
+
+//callback function, only runs when the event listener in renderProjects triggers from the click
+const focusProject = (project) => {
+    focusedProject = project;
+    renderTodos(focusedProject);
+};
+
+//function receiving the callback, so that when the focused project is clicked it can use the focusProject callback
+renderProjects(focusProject);
