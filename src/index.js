@@ -1,13 +1,9 @@
 import {
     projectContainer,
     createTodo,
-    todoToggle,
     addTodo,
-    removeTodo,
     createProject,
     addProject,
-    removeProject,
-    changePriority
 } from "./app.js";
 
 import {
@@ -44,7 +40,7 @@ projectForm.addEventListener("submit", (event) => {
     const project = createProject(projectName);
     addProject(project);
 
-    renderProjects(focusProject);
+    renderProjects(focusProject, focusedProject);
 
     projectForm.reset();
     projectDialog.close();
@@ -88,7 +84,8 @@ let focusedProject = defaultProject;
 const focusProject = (project) => {
     focusedProject = project;
     renderTodos(focusedProject);
+    renderProjects(focusProject, focusedProject);
 };
 
 //function receiving the callback, so that when the focused project is clicked it can use the focusProject callback
-renderProjects(focusProject);
+renderProjects(focusProject, focusedProject);

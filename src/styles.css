@@ -5,12 +5,16 @@
 }
 
 .list-panel {
-    padding: 16px 0 0 16px;
+    padding: 16px 16px 0 16px;
     background-color: rgb(235, 233, 233);
 }
 
-.project {
+.new-project-container {
     display: flex;
+}
+
+.project-delete-button {
+    margin-left: auto;
 }
 
 .new-project-button,

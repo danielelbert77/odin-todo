@@ -1,13 +1,7 @@
 import {
     projectContainer,
-    createTodo,
-    todoToggle,
-    addTodo,
     removeTodo,
-    createProject,
-    addProject,
     removeProject,
-    changePriority
 } from "./app.js";
 
 //variables for use later, taken from the html template
@@ -16,21 +10,51 @@ const todoList = document.querySelector(".todo-list");
 const dropdown = document.querySelector("#project_list");
 
 
-const renderProjects = (onSelectProject) => { //onSelectProject is essentially the callback function "focusProject"
+const renderProjects = (onSelectProject, focusedProject) => { //onSelectProject is essentially the callback function "focusProject"
     projectList.replaceChildren(); //clears the list of projects from the DOM tree so that it doesn't render duplicates
 
     for (const project of projectContainer) {
+        const newProjectContainer = document.createElement("div");
+        newProjectContainer.className = "new-project-container";
+        
         const newProject = document.createElement("div");
-
         newProject.textContent = project.title;
         newProject.id = project.id;
         newProject.className = "project";
 
-        newProject.addEventListener("click", () => {
+        const projectDeleteButton = document.createElement("button");
+        projectDeleteButton.type = "button";
+        projectDeleteButton.className = "project-delete-button";
+        projectDeleteButton.textContent = "Delete";
+        projectDeleteButton.style.display = project.id === focusedProject.id ? "inline-block" : "none";
+
+        newProjectContainer.appendChild(newProject);
+        newProjectContainer.appendChild(projectDeleteButton);
+
+        projectList.appendChild(newProjectContainer);
+
+        newProjectContainer.addEventListener("click", () => {            
             onSelectProject(project); //same as focusProject(project), which renders the todos of the focused project
+            //highlight it visually, use pseudoclasses here
         });
 
-        projectList.appendChild(newProject);
+        projectDeleteButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+
+            removeProject(project.id);
+
+            if (project === focusedProject) {
+                focusedProject = projectContainer[0] ?? null;
+            }
+
+            renderProjects(onSelectProject, focusedProject);
+
+            if (focusedProject) {
+                renderTodos(focusedProject);
+            } else {
+                todoList.replaceChildren();
+            }
+        });
     };
 };
 
@@ -73,7 +97,7 @@ const renderTodos = (project) => {
 
         todoList.appendChild(newTodo);
 
-        
+
         todoCompletionToggle.addEventListener("change", () => {
             todoDeleteButton.style.display = todoCompletionToggle.checked ? "inline-block" : "none";
             todo.completed = todoCompletionToggle.checked ? true : false;
