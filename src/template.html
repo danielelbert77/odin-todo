@@ -41,11 +41,19 @@
             <input type="text" name="todo_name" id="todo_name" required>
 
             <label for="todo_description">Description:</label>
-            <input type="text" name="todo_description" id="todo_description" required>
+            <textarea name="todo_description" id="todo_description" required></textarea>
 
             <label for="todo_duedate">Due Date:</label>
             <input type="text" name="todo_duedate" id="todo_duedate" required>
             
+            <button type="submit">Save</button>
+        </form>
+    </dialog>
+
+    <dialog class="project-edit-dialog">
+        <form class="project-edit-form">
+            <label for="updated_project_title">Edit Project Name:</label>
+            <input type="text" name="updated_project_title" id="updated_project_title" required>
             <button type="submit">Save</button>
         </form>
     </dialog>
@@ -56,7 +64,7 @@
             <input type="text" name="updated_todo_title" id="updated_todo_title" required>
             
             <label for="updated_todo_description">Edit Description:</label>
-            <input type="text" name="updated_todo_description" id="updated_todo_description" required>
+            <textarea name="updated_todo_description" id="updated_todo_description" required></textarea>
 
             <label for="updated_todo_duedate">Edit Due Date:</label>
             <input type="text" name="updated_todo_duedate" id="updated_todo_duedate" required>

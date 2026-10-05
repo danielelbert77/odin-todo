@@ -46,6 +46,10 @@ const addProject = (project) => {
     projectContainer.push(project);
 };
 
+const editProject = (project, title) => {
+    project.title = title;
+};
+
 const removeProject = (projectId) => {
     const index = projectContainer.findIndex(project => project.id === projectId);
     
@@ -69,6 +73,7 @@ export {
     removeTodo,
     createProject,
     addProject,
+    editProject,
     removeProject,
     changePriority
 };

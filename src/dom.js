@@ -8,6 +8,12 @@ import {
 const projectList = document.querySelector(".project-list");
 const todoList = document.querySelector(".todo-list");
 const dropdown = document.querySelector("#project_list");
+const projectEditDialog = document.querySelector(".project-edit-dialog");
+const inputProjectName = document.querySelector("#updated_project_title");
+const todoEditDialog = document.querySelector(".todo-edit-dialog");
+const inputTodoName = document.querySelector("#updated_todo_title");
+const inputTodoDescription = document.querySelector("#updated_todo_description");
+const inputTodoDueDate = document.querySelector("#updated_todo_duedate");
 
 
 const renderProjects = (onSelectProject, focusedProject) => { //onSelectProject is essentially the callback function "focusProject"
@@ -36,6 +42,14 @@ const renderProjects = (onSelectProject, focusedProject) => { //onSelectProject 
         newProjectContainer.addEventListener("click", () => {            
             onSelectProject(project); //same as focusProject(project), which renders the todos of the focused project
             //highlight it visually, use pseudoclasses here
+        });
+
+        newProjectContainer.addEventListener("dblclick", () => {
+            onSelectProject(project);
+
+            inputProjectName.value = project.title;
+
+            projectEditDialog.showModal();
         });
 
         projectDeleteButton.addEventListener("click", (event) => {
@@ -87,7 +101,6 @@ const renderTodos = (project, onSelectTodo) => {
         const todoDeleteButton = document.createElement("button");
         todoDeleteButton.type = "button";
         todoDeleteButton.className = "todo-delete-button";
-        todoDeleteButton.id = todo.id;
         todoDeleteButton.textContent = "Delete";
         todoDeleteButton.style.display = "none";
 
@@ -104,15 +117,19 @@ const renderTodos = (project, onSelectTodo) => {
         });
 
         todoDeleteButton.addEventListener("click", () => {
-            removeTodo(project, todoDeleteButton.id);
+            removeTodo(project, todo.id);
 
             renderTodos(project);
         });
 
-        const todoEditDialog = document.querySelector(".todo-edit-dialog");
 
         newTodo.addEventListener("dblclick", () => {
             onSelectTodo(todo);
+
+            inputTodoName.value = todo.title;
+            inputTodoDescription.value = todo.description;
+            inputTodoDueDate.value = todo.dueDate;
+
             todoEditDialog.showModal();
         });
     };

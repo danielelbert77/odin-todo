@@ -5,6 +5,7 @@ import {
     editTodo,
     createProject,
     addProject,
+    editProject,
 } from "./app.js";
 
 import {
@@ -94,6 +95,24 @@ todoForm.addEventListener("submit", (event) => {
 
     todoForm.reset();
     todoDialog.close();
+});
+
+//functionality for editing an existing project
+const projectEditForm = document.querySelector(".project-edit-form");
+const projectEditDialog = document.querySelector(".project-edit-dialog");
+
+projectEditForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const updatedProject = focusedProject;
+    const updatedTitle = document.querySelector("#updated_project_title").value;
+
+    editProject(updatedProject, updatedTitle);
+
+    renderProjects(focusProject, focusedProject);
+
+    projectEditForm.reset();
+    projectEditDialog.close();
 });
 
 //functionality for editing an existing todo in a project
