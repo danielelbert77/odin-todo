@@ -19,6 +19,12 @@ const addTodo = (project, todo) => {
     project.todos.push(todo);
 };
 
+const editTodo = (todo, title, description, dueDate) => {
+    todo.title = title;
+    todo.description = description;
+    todo.dueDate = dueDate;
+}
+
 const removeTodo = (project, todoId) => {
     const index = project.todos.findIndex(todo => todo.id === todoId);
     
@@ -59,6 +65,7 @@ export {
     createTodo,
     todoToggle,
     addTodo,
+    editTodo,
     removeTodo,
     createProject,
     addProject,

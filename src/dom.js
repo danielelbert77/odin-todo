@@ -58,7 +58,7 @@ const renderProjects = (onSelectProject, focusedProject) => { //onSelectProject 
     };
 };
 
-const renderTodos = (project) => {
+const renderTodos = (project, onSelectTodo) => {
     todoList.replaceChildren(); //clears the list of todos from the DOM tree so that it doesn't render duplicates
 
     for (const todo of project.todos) {
@@ -107,6 +107,13 @@ const renderTodos = (project) => {
             removeTodo(project, todoDeleteButton.id);
 
             renderTodos(project);
+        });
+
+        const todoEditDialog = document.querySelector(".todo-edit-dialog");
+
+        newTodo.addEventListener("dblclick", () => {
+            onSelectTodo(todo);
+            todoEditDialog.showModal();
         });
     };
 };

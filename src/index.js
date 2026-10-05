@@ -2,6 +2,7 @@ import {
     projectContainer,
     createTodo,
     addTodo,
+    editTodo,
     createProject,
     addProject,
 } from "./app.js";
@@ -14,14 +15,32 @@ import {
 
 import './styles.css';
 
+//callback functions, only runs when the event listener in renderProjects/renderTodos triggers from the click
+const focusTodo = (todo) => {
+    focusedTodo = todo;
+};
+
+const focusProject = (project) => {
+    focusedProject = project;
+    renderTodos(focusedProject, focusTodo);
+    renderProjects(focusProject, focusedProject);
+};
+
 //Creating a default project, a default todo, and rendering it upon startup
 const defaultProject = createProject("Default");
 addProject(defaultProject);
 
-const todo = createTodo("Learn JavaScript", "Default description for this example", "9/10/2025");
-addTodo(defaultProject, todo);
+const defaultTodo = createTodo("Learn JavaScript", "Default description for this example", "9/10/2025");
+addTodo(defaultProject, defaultTodo);
 
-renderTodos(defaultProject);
+renderTodos(defaultProject, focusTodo);
+
+let focusedTodo = defaultTodo;
+let focusedProject = defaultProject;
+
+//functions receiving the callback, so that when the focused project is clicked it can use the focusProject callback
+renderProjects(focusProject, focusedProject);
+renderTodos(focusedProject, focusTodo)
 
 //functionality for adding a new project to projectContainer
 const newProjectButton = document.querySelector(".new-project-button");
@@ -71,21 +90,29 @@ todoForm.addEventListener("submit", (event) => {
     const todo = createTodo(todoName, todoDescription, todoDueDate);
     addTodo(chosenProject, todo);
 
-    renderTodos(chosenProject);
+    renderTodos(chosenProject, focusTodo);
 
     todoForm.reset();
     todoDialog.close();
 });
 
+//functionality for editing an existing todo in a project
 
-let focusedProject = defaultProject;
+const todoEditForm = document.querySelector(".todo-edit-form");
+const todoEditDialog = document.querySelector(".todo-edit-dialog");
 
-//callback function, only runs when the event listener in renderProjects triggers from the click
-const focusProject = (project) => {
-    focusedProject = project;
-    renderTodos(focusedProject);
-    renderProjects(focusProject, focusedProject);
-};
+todoEditForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-//function receiving the callback, so that when the focused project is clicked it can use the focusProject callback
-renderProjects(focusProject, focusedProject);
+    //Figure out how to make it know which todo you're editing
+    const updatedToto = focusedTodo;
+    const updatedTitle = document.querySelector("#updated_todo_title").value;
+    const updatedDescription = document.querySelector("#updated_todo_description").value;
+    const updatedDueDate = document.querySelector("#updated_todo_duedate").value;
+
+    editTodo(updatedToto, updatedTitle, updatedDescription, updatedDueDate);
+    renderTodos(focusedProject, focusTodo);
+
+    todoEditForm.reset();
+    todoEditDialog.close();
+});
