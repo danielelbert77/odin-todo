@@ -14,36 +14,64 @@ import {
     renderTodoDropdown
 } from "./dom.js";
 
+import {
+    saveItems,
+    loadItems
+} from "./storage.js";
+
 import './styles.css';
 
-//callback functions, only runs when the event listener in renderProjects/renderTodos triggers from the click
+// Load saved projects
+const savedItems = loadItems();
+projectContainer.push(...savedItems);
+
+// Track the currently focused project and todo
+let focusedTodo = null;
+let focusedProject = null;
+
+// Save the current projects and their todos
+const persistItems = () => saveItems(projectContainer);
+
+// Create default data only on the first launch
+if (projectContainer.length === 0) {
+    const defaultProject = createProject("Default");
+    addProject(defaultProject);
+
+    const defaultTodo = createTodo(
+        "Learn JavaScript",
+        "Default description for this example",
+        "2025-09-10"
+    );
+
+    addTodo(defaultProject, defaultTodo);
+}
+
+// Initialize focused items
+focusedProject = projectContainer[0];
+focusedTodo = focusedProject.todos[0] ?? null;
+
+// Save initial data
+persistItems();
+
+// Callback functions
 const focusTodo = (todo) => {
     focusedTodo = todo;
 };
 
 const focusProject = (project) => {
     focusedProject = project;
+    focusedTodo = project.todos[0] ?? null;
+
     renderTodos(focusedProject, focusTodo);
     renderProjects(focusProject, focusedProject);
 };
 
-//Creating a default project, a default todo, and rendering it upon startup
-const defaultProject = createProject("Default");
-addProject(defaultProject);
-
-const defaultTodo = createTodo("Learn JavaScript", "Default description for this example", "9/10/2025");
-addTodo(defaultProject, defaultTodo);
-
-renderTodos(defaultProject, focusTodo);
-
-let focusedTodo = defaultTodo;
-let focusedProject = defaultProject;
-
-//functions receiving the callback, so that when the focused project is clicked it can use the focusProject callback
+// Initial rendering
 renderProjects(focusProject, focusedProject);
-renderTodos(focusedProject, focusTodo)
+renderTodos(focusedProject, focusTodo);
 
-//functionality for adding a new project to projectContainer
+
+// Add a new project
 const newProjectButton = document.querySelector(".new-project-button");
 const projectDialog = document.querySelector(".project-dialog");
 const projectForm = document.querySelector(".project-form");
@@ -60,13 +88,16 @@ projectForm.addEventListener("submit", (event) => {
     const project = createProject(projectName);
     addProject(project);
 
+    persistItems();
+
     renderProjects(focusProject, focusedProject);
 
     projectForm.reset();
     projectDialog.close();
 });
 
-//functionality for adding a new todo to a project
+
+// Add a new todo
 const newTodoButton = document.querySelector(".new-todo-button");
 const todoDialog = document.querySelector(".todo-dialog");
 const todoForm = document.querySelector(".todo-form");
@@ -88,8 +119,12 @@ todoForm.addEventListener("submit", (event) => {
         project => project.id === chosenProjectId
     );
 
+    if (!chosenProject) return;
+
     const todo = createTodo(todoName, todoDescription, todoDueDate);
     addTodo(chosenProject, todo);
+
+    persistItems();
 
     renderTodos(chosenProject, focusTodo);
 
@@ -97,17 +132,23 @@ todoForm.addEventListener("submit", (event) => {
     todoDialog.close();
 });
 
-//functionality for editing an existing project
+
+// Edit an existing project
 const projectEditForm = document.querySelector(".project-edit-form");
 const projectEditDialog = document.querySelector(".project-edit-dialog");
 
 projectEditForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const updatedProject = focusedProject;
-    const updatedTitle = document.querySelector("#updated_project_title").value;
+    if (!focusedProject) return;
 
-    editProject(updatedProject, updatedTitle);
+    const updatedTitle = document.querySelector(
+        "#updated_project_title"
+    ).value;
+
+    editProject(focusedProject, updatedTitle);
+
+    persistItems();
 
     renderProjects(focusProject, focusedProject);
 
@@ -115,21 +156,37 @@ projectEditForm.addEventListener("submit", (event) => {
     projectEditDialog.close();
 });
 
-//functionality for editing an existing todo in a project
 
+// Edit an existing todo
 const todoEditForm = document.querySelector(".todo-edit-form");
 const todoEditDialog = document.querySelector(".todo-edit-dialog");
 
 todoEditForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    //Figure out how to make it know which todo you're editing
-    const updatedToto = focusedTodo;
-    const updatedTitle = document.querySelector("#updated_todo_title").value;
-    const updatedDescription = document.querySelector("#updated_todo_description").value;
-    const updatedDueDate = document.querySelector("#updated_todo_duedate").value;
+    if (!focusedTodo || !focusedProject) return;
 
-    editTodo(updatedToto, updatedTitle, updatedDescription, updatedDueDate);
+    const updatedTitle = document.querySelector(
+        "#updated_todo_title"
+    ).value;
+
+    const updatedDescription = document.querySelector(
+        "#updated_todo_description"
+    ).value;
+
+    const updatedDueDate = document.querySelector(
+        "#updated_todo_duedate"
+    ).value;
+
+    editTodo(
+        focusedTodo,
+        updatedTitle,
+        updatedDescription,
+        updatedDueDate
+    );
+
+    persistItems();
+
     renderTodos(focusedProject, focusTodo);
 
     todoEditForm.reset();

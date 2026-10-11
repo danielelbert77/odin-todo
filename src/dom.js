@@ -4,6 +4,8 @@ import {
     removeProject,
 } from "./app.js";
 
+import { saveItems } from "./storage.js";
+
 //variables for use later, taken from the html template
 const projectList = document.querySelector(".project-list");
 const todoList = document.querySelector(".todo-list");
@@ -57,6 +59,8 @@ const renderProjects = (onSelectProject, focusedProject) => { //onSelectProject 
 
             removeProject(project.id);
 
+            saveItems(projectContainer);
+
             if (project === focusedProject) {
                 focusedProject = projectContainer[0] ?? null;
             }
@@ -102,7 +106,11 @@ const renderTodos = (project, onSelectTodo) => {
         todoDeleteButton.type = "button";
         todoDeleteButton.className = "todo-delete-button";
         todoDeleteButton.textContent = "Delete";
-        todoDeleteButton.style.display = "none";
+        // Restore the saved completion state
+        todoCompletionToggle.checked = todo.completed;
+
+        todoDeleteButton.style.display =
+            todo.completed ? "inline-block" : "none";
 
         newTodo.appendChild(todoCompletionToggle);
         newTodo.appendChild(todoContent);
@@ -112,12 +120,18 @@ const renderTodos = (project, onSelectTodo) => {
 
 
         todoCompletionToggle.addEventListener("change", () => {
-            todoDeleteButton.style.display = todoCompletionToggle.checked ? "inline-block" : "none";
-            todo.completed = todoCompletionToggle.checked ? true : false;
+            todoDeleteButton.style.display =
+                todoCompletionToggle.checked ? "inline-block" : "none";
+
+            todo.completed = todoCompletionToggle.checked;
+
+            saveItems(projectContainer);
         });
 
         todoDeleteButton.addEventListener("click", () => {
             removeTodo(project, todo.id);
+
+            saveItems(projectContainer);
 
             renderTodos(project);
         });

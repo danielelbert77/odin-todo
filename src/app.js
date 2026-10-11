@@ -6,7 +6,6 @@ const createTodo = (title, description, dueDate) => {
         title,
         description,
         dueDate,
-        priority: 3,
         completed: false
     };
 };
@@ -58,12 +57,6 @@ const removeProject = (projectId) => {
     };
 };
 
-const changePriority = (todo, priority) => {
-    if(priority >= 1 && priority <= 3) {
-        todo.priority = priority;
-    };
-};
-
 export {
     projectContainer,
     createTodo,
@@ -75,5 +68,4 @@ export {
     addProject,
     editProject,
     removeProject,
-    changePriority
 };
